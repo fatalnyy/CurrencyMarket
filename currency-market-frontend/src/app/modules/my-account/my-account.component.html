@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header" *ngIf='user'>
+    {{user.username}}
+    &nbsp;
+    <button type="button" class="btn btn-outline-dark btn-sm" [routerLink]="['/wallets']">Portfele</button>
+  </div>
+  <div class="card-body">
+    <div class='transactions__container'>
+      <table mdbTable hover="true" #tableEl="mdbTable" class="z-depth-1">
+      <thead>
+          <tr>
+          <th>Nr.</th>
+          <th *ngFor="let label of transactionsInfoDisplay" scope="col">{{label}}
+          </th>
+          </tr>
+      </thead>
+      <tbody *ngIf="(transactions$ | async) as transactions; else transactionsFetching">
+          <tr  *ngFor="let transaction of transactions; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
+                scope="row">{{(i+1).toString()}}</th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ transaction.name }}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{transaction.amount | number:'1.2-2'}}</td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ transaction.createdAt | date:'short'}}</td>
+          </tr>
+          </tbody>
+      <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="4">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="transactions$ | async"></mdb-table-pagination>
+            </td>
+          </tr>
+          </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

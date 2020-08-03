@@ -1,0 +1,49 @@
+<div class='card'>
+  <div class='card-header d-flex justify-content-center'>
+    {{currency.name}}
+  </div>
+
+  <div class='card-body' >
+    <div class='row d-flex justify-content-center'>
+      <div class='col-md-4'>
+        <div class='row'>
+          <div class='col-md-4'>Name:</div>
+          <div class='col-md-4'>{{currency.name}}</div>
+        </div>
+        <div class='row'>
+          <div class='col-md-4'>Kod waluty:</div>
+          <div class='col-md-4'>{{currency.code}}</div>
+        </div>
+        <div class='row'>
+            <div class='col-md-4'>Ilość zakupu:</div>
+          <input class='col-md-4' [placeholder]="'Ile chcesz zakupić tej waluty?'" [(ngModel)]="currencyToBuyAmount">
+        </div>
+        <div class='row'>
+          <div class='col-md-4'>Jaka waluta chcesz zaplacic?</div>
+          <div class="col-md-10">
+            <select class="form-control" name="uniqueCurrencies" [(ngModel)]="currencyToPay" (ngModelChange)="countCurrencyToPayAmount(currencyToPay)">
+              <option *ngFor="let uniqueCurrency of uniqueCurrencies" [value]="uniqueCurrency">
+                {{uniqueCurrency}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="currencyToPay" class='row'>
+          <div class='col-md-4'>Zaplacisz:</div>
+          <div class='col-md-4' >{{currencyToPayAmount | number : '.2-2'}} {{currencyToPay}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='card-footer d-flex justify-content-center'>
+    <button class='btn btn-outline-secondary'
+            (click)='onBack()'
+            style='width:80px'>
+      <i class='fa fa-chevron-left'></i> Back
+    </button>
+    <button type="button" class="btn btn-outline-success"  (click)="buyCurrency()" mdbWavesEffect>
+      <i class="fa fa-plus" aria-hidden="true">Buy</i>
+    </button>
+  </div>
+</div>

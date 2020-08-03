@@ -1,0 +1,33 @@
+<div class="container currency-list__wrapper">
+  <table mdbTable hover="true" #tableEl="mdbTable" class="z-depth-1">
+    <thead>
+    <tr>
+      <th>Nr.</th>
+      <th *ngFor="let label of currencyInfoDisplay" scope="col">{{label}}
+      </th>
+    </tr>
+    </thead>
+    <tbody *ngIf="(currencies$ | async) as currencies; else fetching">
+    <tr  *ngFor="let currency of currencies; let i = index" [routerLink]="['/currency', currency.code]">
+      <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
+          scope="row">{{(i+1).toString()}}</th>
+      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"><img src="assets/flags/{{currency?.code}}.png">{{currency[currencyInfoDisplay[0]]}}</td>
+      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{currency[currencyInfoDisplay[1]]}}</td>
+      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{currency[currencyInfoDisplay[2]]}}</td>
+      <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{currency[currencyInfoDisplay[3]]}}</td>
+    </tr>
+    </tbody>
+    <tfoot class="grey lighten-5 w-100">
+    <tr>
+      <td colspan="4">
+        <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="currencies$ | async"></mdb-table-pagination>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<ng-template #fetching>
+  Ładowanie informacji na temat waluty...
+</ng-template>
+

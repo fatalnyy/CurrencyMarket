@@ -1,0 +1,28 @@
+<div class="row d-flex flex-column justify-content-center align-items-center currency__wrapper" *ngIf="currenciesService.transactionState.value === 0">
+  <div *ngIf="(currency$ | async) as currency; else fetching" class="col-md-2 pull left">
+  <img src="assets/flags/{{currency?.code}}.png">    {{currency.name}}
+  </div>
+  <div class="col-md-6">
+    <canvas id="currencyChart" width="700" height="400"></canvas>
+  </div>
+
+  <div>
+    <button class='btn btn-outline-secondary'
+    (click)='onBack()'>
+    <i class='fa fa-chevron-left'></i> Back
+    </button>
+    <button type="button" class="btn btn btn-outline-primary"  (click)="currenciesService.transactionState.next(2)" mdbWavesEffect>
+      <i class="fa fa-minus" aria-hidden="true">Sprzedaj</i>
+    </button>
+    <button type="button" class="btn btn-outline-success"  (click)="currenciesService.transactionState.next(1)" mdbWavesEffect>
+      <i class="fa fa-minus" aria-hidden="true">Kup</i>
+    </button>
+  </div>
+</div>
+
+<ng-template #fetching>
+  Ładowanie informacji na temat waluty...
+</ng-template>
+
+<app-buy-currency [currency]="currency$.value" *ngIf="currenciesService.transactionState.value === 1"></app-buy-currency>
+<app-sell-currency [currency]="currency$.value" *ngIf="currenciesService.transactionState.value === 2"></app-sell-currency>

@@ -1,0 +1,101 @@
+<div class='card'>
+  <div class='card-header' *ngIf="wallet">
+    <img src="assets/flags/{{wallet?.currency}}.png">
+    {{wallet.name}}
+  </div>
+
+  <div class='card-body'>
+    <div class='row col-md-12'>
+      <div class='col-md-2' *ngIf="wallet">
+        <div class='row'>
+          <div class='col-md-4'>Nazwa:</div>
+          <div class='col-md-4'>{{wallet.name}}</div>
+        </div>
+        <div class='row'>
+          <div class='col-md-4'>Waluta:</div>
+          <div class='col-md-4'>{{wallet.currency}}</div>
+        </div>
+        <div class='row'>
+          <div class='col-md-4'>Kwota:</div>
+          <div class='col-md-4'>{{wallet.amount | number:'1.2-2'}}</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <canvas id="myChart" width="700" height="400"></canvas>
+      </div>
+      <div class='col-md-6'>
+        <table mdbTable hover="true" #tableEl="mdbTable" class="z-depth-1">
+        <thead>
+            <tr>
+            <th>Nr.</th>
+            <th *ngFor="let label of walletTransactionsInfoDisplay" scope="col">{{label}}
+            </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="(walletTransactions$ | async) as walletTransactions; else transactionsFetching">
+            <tr  *ngFor="let transaction of walletTransactions; let i = index">
+              <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
+                  scope="row">{{(i+1).toString()}}</th>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ transaction.name }}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{transaction.amount | number:'1.2-2'}}</td>
+              <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{ transaction.createdAt | date:'short'}}</td>
+            </tr>
+            </tbody>
+        <tfoot class="grey lighten-5 w-100">
+            <tr>
+              <td colspan="4">
+                <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="walletTransactions$ | async"></mdb-table-pagination>
+              </td>
+            </tr>
+            </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class='card-footer'>
+    <button class='btn btn-outline-secondary'
+            (click)='onBack()'
+            style='width:80px'>
+      <i class='fa fa-chevron-left'></i> Back
+    </button>
+    <button type="button" class="btn btn-outline-success"  (click)="open(manageWalletModal, 'WalletBoost')" mdbWavesEffect>
+        <i class="fa fa-plus" aria-hidden="true">Wpłata</i>
+    </button>
+    <button type="button" class="btn btn-outline-primary"  (click)="open(manageWalletModal, 'WalletWithdraw')" mdbWavesEffect>
+        <i class="fa fa-minus" aria-hidden="true">Wypłata</i>
+    </button>
+  </div>
+</div>
+
+<ng-template #manageWalletModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title" *ngIf="operationType == 'WalletBoost'">Wpłać do portfela</h4>
+      <h4 class="modal-title" id="modal-basic-title" *ngIf="operationType == 'WalletWithdraw'">Wypłać z portfela</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form name="manageForm">
+
+        <div class="form-group row">
+          <label for="operationAmount" class="col-md-2 col-form-label">Ilość</label>
+          <div class="col-md-10">
+            <div class="md-form mt-0">
+              <input type="number" class="form-control" id="operationAmount" name="operationAmountInput" placeholder="1000" [(ngModel)] = "operationAmount" max="{{ownedAmount}}">       
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success"  (click)="modal.close(manageWallet())" mdbWavesEffect>
+        <i class="fa fa-check" aria-hidden="true">Potwierdź</i>
+      </button>
+    </div>
+  </ng-template>
+
+<ng-template #transactionsFetching>
+    Brak transakcji dla {{wallet.name}}
+  </ng-template>

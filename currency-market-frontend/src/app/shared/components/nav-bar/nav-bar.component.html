@@ -1,0 +1,59 @@
+
+<mdb-navbar *ngIf="(loggedIn$ | async); else notLoggedIn" SideClass="navbar navbar-expand-lg navbar-dark black lighten-1" [containerInside]="false">
+  <mdb-navbar-brand><a class="navbar-brand" href="#">Rynek walutowy</a></mdb-navbar-brand>
+  <links>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" [routerLink]="['/list']">
+        <a class="nav-link waves-light" mdbWavesEffect  >Lista</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect>O nas</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect (click)="mailTo()"><mdb-icon fas icon="envelope"></mdb-icon>Kontakt<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/wallets']"><mdb-icon fas icon="fas fa-wallet"></mdb-icon>Portfele</a>
+      </li>
+      <li class="nav-item avatar dropdown" dropdown>
+        <a dropdownToggle type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="user"></mdb-icon>Profil<span class="caret"></span>
+         </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light username">{{user.username}}</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect  [routerLink]="['/my-account']">Moje konto</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect (click)="logout()">Wyloguj</a>
+        </div>
+      </li>
+    </ul>
+  </links>
+</mdb-navbar>
+
+<ng-template #notLoggedIn >
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark black lighten-1" [containerInside]="false">
+    <mdb-navbar-brand><a class="navbar-brand" href="#">Rynek walutowy</a></mdb-navbar-brand>
+    <links>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link waves-light" [routerLink]="['/list']" mdbWavesEffect>Lista</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect>O nas</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect (click)="mailTo()"><mdb-icon fas icon="envelope"></mdb-icon>Kontakt<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/login']"><mdb-icon fas icon="fas fa-sign-in-alt"></mdb-icon>Zaloguj się</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-light" mdbWavesEffect [routerLink]="['/register']"><mdb-icon fas icon="fas fa-hand-holding-usd"></mdb-icon>Dołącz do nas</a>
+        </li>
+      </ul>
+    </links>
+  </mdb-navbar>
+</ng-template>

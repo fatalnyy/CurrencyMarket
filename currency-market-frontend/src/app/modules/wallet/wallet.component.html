@@ -1,0 +1,76 @@
+<div class="card">
+  <div class="card-header">
+    <a>
+      <button type="button" class="btn btn-outline-success"  (click)="open(content)" mdbWavesEffect>
+        <i class="fa fa-plus" aria-hidden="true">Dodaj portfel</i>
+      </button>
+      </a>
+  </div>
+
+  <div class="card-body">
+    <div class='container wallets__wrapper'>
+      <table mdbTable hover="true" #tableEl="mdbTable" class="z-depth-1"
+        *ngIf='wallets && wallets.length; else fetching'>
+      <thead>
+        <tr>
+          <th *ngFor="let label of walletsInfoDisplay" scope="col">{{label}}
+          </th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor='let wallet of wallets'>
+          <td>
+              <img src="assets/flags/{{wallet?.currency}}.png">
+              {{ wallet.name }}
+          </td>
+          <td>{{ wallet.currency }}</td>
+          <td>{{ wallet.amount | number:'1.2-2'}}</td>
+          <td>
+
+            <a [routerLink]="['/wallets', wallet.username, wallet.currency]">
+              <i class="fa fa-file" aria-hidden="true"></i> Detale
+            </a>
+
+
+          </td>
+        </tr>
+
+      </tbody >
+      </table>
+      </div>
+  </div>
+</div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Dodaj portfel</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+
+        <div class="form-group row">
+          <label for="currency" class="col-md-2 col-form-label">Waluta</label>
+          <div class="col-md-10">
+            <select class="form-control" name="uniqueCurrencies" [(ngModel)]="newWalletCurrency">
+              <option *ngFor="let uniqueCurrency of uniqueCurrencies" [value]="uniqueCurrency">
+                {{uniqueCurrency}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success"  (click)="addWallet()" mdbWavesEffect>
+        <i class="fa fa-plus" aria-hidden="true"> Dodaj </i>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #fetching>
+    Nie posiadasz żadnych portfeli...
+  </ng-template>

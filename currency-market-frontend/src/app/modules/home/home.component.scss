@@ -1,0 +1,26 @@
+button.accent-button {
+    background-color: #4CAF50;
+    height: 60px;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    width: 25%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: 50px;
+    margin-left: -200px;
+  }
+ 
+  button:hover {
+    opacity: 0.8;
+  }
+
+  body{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+  }

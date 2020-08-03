@@ -1,0 +1,6 @@
+@import "app/styles/colors";
+<<<<<<< HEAD
+@import "toastr";
+=======
+@import "toastr";
+>>>>>>> origin/develop
